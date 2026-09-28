@@ -1,0 +1,182 @@
+// Prisma Schema for CrowdFix Backend
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ──────────────────────────────────────────────
+
+enum UserRole {
+  citizen
+  admin
+}
+
+enum IssueCategory {
+  pothole
+  streetlight
+  sidewalk
+  graffiti
+  debris
+  other
+}
+
+enum IssueStatus {
+  reported
+  assigned
+  in_progress
+  resolved
+  verified
+  rejected
+}
+
+enum IssuePriority {
+  low
+  medium
+  high
+}
+
+// ─── Models ─────────────────────────────────────────────
+
+model User {
+  id              String   @id @default(uuid()) @db.Uuid
+  name            String   @db.VarChar(255)
+  email           String   @unique @db.VarChar(255)
+  password_hash   String   @db.Text
+  phone           String?  @db.VarChar(20)
+  profile_photo   String?  @db.Text
+  perm_address    String?  @db.Text
+  temp_address    String?  @db.Text
+  role            UserRole @default(citizen)
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  // Relations
+  created_issues    Issue[]         @relation("CreatedBy")
+  assigned_issues   Issue[]         @relation("AssignedTo")
+  issue_updates     IssueUpdate[]
+  upvotes           Upvote[]
+  notifications     Notification[]
+  community_posts   CommunityPost[]
+  refresh_tokens    RefreshToken[]
+
+  @@map("users")
+}
+
+model Issue {
+  id             String        @id @default(uuid()) @db.Uuid
+  title          String        @db.VarChar(500)
+  description    String        @db.Text
+  category       IssueCategory
+  image_url      String?       @db.Text
+  latitude       Float?
+  longitude      Float?
+  address        String?       @db.Text
+  pincode        String?       @db.VarChar(10)
+  status         IssueStatus   @default(reported)
+  priority       IssuePriority @default(medium)
+  upvote_count   Int           @default(0)
+  remarks        String?       @db.Text
+  expected_date  DateTime?
+  rating         Int?
+  feedback       String?       @db.Text
+  created_by_id  String        @db.Uuid
+  assigned_to_id String?       @db.Uuid
+  created_at     DateTime      @default(now())
+  updated_at     DateTime      @updatedAt
+
+  // Relations
+  created_by     User          @relation("CreatedBy", fields: [created_by_id], references: [id], onDelete: Cascade)
+  assigned_to    User?         @relation("AssignedTo", fields: [assigned_to_id], references: [id], onDelete: SetNull)
+  updates        IssueUpdate[]
+  upvotes        Upvote[]
+  notifications  Notification[]
+
+  @@index([status])
+  @@index([category])
+  @@index([priority])
+  @@index([created_by_id])
+  @@index([assigned_to_id])
+  @@index([latitude, longitude])
+  @@map("issues")
+}
+
+model IssueUpdate {
+  id            String      @id @default(uuid()) @db.Uuid
+  issue_id      String      @db.Uuid
+  status        IssueStatus
+  comment       String?     @db.Text
+  updated_by_id String      @db.Uuid
+  created_at    DateTime    @default(now())
+
+  // Relations
+  issue         Issue       @relation(fields: [issue_id], references: [id], onDelete: Cascade)
+  updated_by    User        @relation(fields: [updated_by_id], references: [id], onDelete: Cascade)
+
+  @@index([issue_id])
+  @@map("issue_updates")
+}
+
+model Upvote {
+  id         String   @id @default(uuid()) @db.Uuid
+  issue_id   String   @db.Uuid
+  user_id    String   @db.Uuid
+  created_at DateTime @default(now())
+
+  // Relations
+  issue      Issue    @relation(fields: [issue_id], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([issue_id, user_id])
+  @@map("upvotes")
+}
+
+model Notification {
+  id         String   @id @default(uuid()) @db.Uuid
+  user_id    String   @db.Uuid
+  issue_id   String?  @db.Uuid
+  message    String   @db.Text
+  read       Boolean  @default(false)
+  created_at DateTime @default(now())
+
+  // Relations
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  issue      Issue?   @relation(fields: [issue_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@index([read])
+  @@map("notifications")
+}
+
+model CommunityPost {
+  id         String   @id @default(uuid()) @db.Uuid
+  user_id    String   @db.Uuid
+  content    String   @db.Text
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  // Relations
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@map("community_posts")
+}
+
+model RefreshToken {
+  id         String   @id @default(uuid()) @db.Uuid
+  user_id    String   @db.Uuid
+  token      String   @unique @db.Text
+  expires_at DateTime
+  created_at DateTime @default(now())
+
+  // Relations
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@index([token])
+  @@map("refresh_tokens")
+}
