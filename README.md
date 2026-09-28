@@ -79,7 +79,7 @@ CROWD_SOURCE/
 ### 1. Clone & Enter
 
 ```bash
-git clone https://github.com/tejasc745/CrowdFix-Civic-Issue-Reporting-System.git
+git clone https://github.com/Naaz0304/CrowdFix-Civic-Issue-Reporting-System.git
 cd CrowdFix-Civic-Issue-Reporting-System
 ```
 
