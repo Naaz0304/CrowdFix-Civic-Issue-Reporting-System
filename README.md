@@ -6,7 +6,7 @@
   <img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
 </p>
 
-# 🏙️ CrowdFix —  Civic Issue Reporting System
+# 🏙️ CrowdFix — Civic Issue Reporting System
 
 > **Empowering citizens to report, track, and resolve public infrastructure issues — together.**
 
@@ -16,14 +16,14 @@ CrowdFix is a full-stack web application where citizens report civic issues (pot
 
 ## 🛠️ Tech Stack
 
-| Layer | Technologies |
-|-------|-------------|
+| Layer        | Technologies                                                              |
+| ------------ | ------------------------------------------------------------------------- |
 | **Frontend** | Next.js 16, TypeScript, Tailwind CSS, Radix UI, Recharts, React Hook Form |
-| **Backend** | Express.js, TypeScript, Prisma ORM, Zod validation, Swagger/OpenAPI |
-| **Database** | PostgreSQL 15 (Dockerized) |
-| **Auth** | JWT (access + refresh tokens), bcrypt (12 rounds), RBAC middleware |
-| **DevOps** | Docker Compose, Helmet, rate-limiting, Winston logger |
-| **Testing** | Jest (39 tests passing) |
+| **Backend**  | Express.js, TypeScript, Prisma ORM, Zod validation, Swagger/OpenAPI       |
+| **Database** | PostgreSQL 15 (Dockerized)                                                |
+| **Auth**     | JWT (access + refresh tokens), bcrypt (12 rounds), RBAC middleware        |
+| **DevOps**   | Docker Compose, Helmet, rate-limiting, Winston logger                     |
+| **Testing**  | Jest (39 tests passing)                                                   |
 
 ---
 
@@ -112,6 +112,7 @@ npm install --legacy-peer-deps
 ### 5. Run (Two Terminals)
 
 **Terminal 1 — Backend:**
+
 ```bash
 cd backend
 npm run dev
@@ -119,6 +120,7 @@ npm run dev
 ```
 
 **Terminal 2 — Frontend:**
+
 ```bash
 npm run dev
 # ▲ Ready on http://localhost:3000
@@ -126,17 +128,17 @@ npm run dev
 
 ### 6. Open & Login
 
-| URL | Description |
-|-----|-------------|
-| http://localhost:3000 | 🌐 Application |
-| http://localhost:5000/api-docs | 📚 Swagger Docs |
+| URL                              | Description     |
+| -------------------------------- | --------------- |
+| http://localhost:3000            | 🌐 Application  |
+| http://localhost:5000/api-docs   | 📚 Swagger Docs |
 | http://localhost:5000/api/health | 🏥 Health Check |
 
 **Demo Accounts:**
 
-| Role | Email | Password |
-|------|-------|----------|
-| Citizen | `citizen@example.com` | `citizen123` |
+| Role      | Email                   | Password       |
+| --------- | ----------------------- | -------------- |
+| Citizen   | `citizen@example.com`   | `citizen123`   |
 | Authority | `authority@example.com` | `authority123` |
 
 ---
@@ -162,13 +164,13 @@ npx prisma studio
 
 ### Environment Variables (`backend/.env`)
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `DATABASE_URL` | `postgresql://crowdfix:crowdfix_secret@localhost:5432/crowdfix_db` | DB connection |
-| `JWT_ACCESS_SECRET` | `crowdfix_access_secret_key...` | Access token secret |
-| `JWT_REFRESH_SECRET` | `crowdfix_refresh_secret_key...` | Refresh token secret |
-| `PORT` | `5000` | Backend port |
-| `FRONTEND_URL` | `http://localhost:3000` | CORS origin |
+| Variable             | Default                                                            | Description          |
+| -------------------- | ------------------------------------------------------------------ | -------------------- |
+| `DATABASE_URL`       | `postgresql://crowdfix:crowdfix_secret@localhost:5432/crowdfix_db` | DB connection        |
+| `JWT_ACCESS_SECRET`  | `crowdfix_access_secret_key...`                                    | Access token secret  |
+| `JWT_REFRESH_SECRET` | `crowdfix_refresh_secret_key...`                                   | Refresh token secret |
+| `PORT`               | `5000`                                                             | Backend port         |
+| `FRONTEND_URL`       | `http://localhost:3000`                                            | CORS origin          |
 
 > ⚠️ Change all secrets before deploying to production!
 
@@ -178,14 +180,14 @@ npx prisma studio
 
 Full Swagger UI at **http://localhost:5000/api-docs** — 22 endpoints across 6 modules:
 
-| Module | Endpoints | Key Operations |
-|--------|-----------|---------------|
-| **Auth** `/api/auth` | 4 | Register, Login, Refresh token, Logout |
-| **Users** `/api/users` | 2 | Get profile, Update profile |
-| **Issues** `/api/issues` | 8 | CRUD, Upvote toggle, Rate, Heatmap data |
-| **Admin** `/api/admin` | 4 | List all, Assign, Update status, Admin list |
-| **Notifications** `/api/notifications` | 3 | List, Mark read, Mark all read |
-| **Dashboard** `/api/dashboard` | 1 | Aggregated statistics |
+| Module                                 | Endpoints | Key Operations                              |
+| -------------------------------------- | --------- | ------------------------------------------- |
+| **Auth** `/api/auth`                   | 4         | Register, Login, Refresh token, Logout      |
+| **Users** `/api/users`                 | 2         | Get profile, Update profile                 |
+| **Issues** `/api/issues`               | 8         | CRUD, Upvote toggle, Rate, Heatmap data     |
+| **Admin** `/api/admin`                 | 4         | List all, Assign, Update status, Admin list |
+| **Notifications** `/api/notifications` | 3         | List, Mark read, Mark all read              |
+| **Dashboard** `/api/dashboard`         | 1         | Aggregated statistics                       |
 
 ### Quick Examples
 
@@ -245,15 +247,6 @@ users ──────┬──▶ issues ──────┬──▶ issue
 - [ ] AI-powered issue categorization from photos
 - [ ] CI/CD pipeline with GitHub Actions
 - [ ] Kubernetes deployment
-
----
-
-## 👨‍💻 Author
-
-**Tejas Chaudhary**
-- GitHub: [@tejasc745](https://github.com/tejasc745)
-
----
 
 ## 📄 License
 
